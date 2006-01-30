@@ -88,6 +88,7 @@ namespace tmplsql {
 	template < class T >
 	class field : public base_field {
 	public:
+		//! the type of the field
 		typedef T value_type;
 	private:
 		friend class row_saver_base;

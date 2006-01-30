@@ -23,6 +23,7 @@ namespace tmplsql {
 	  The actual characters that are quoted may differ based on what RDMS is in use and it's quoting conventions.
 
 	  @param arg value to quote
+	  @param enclose should quoted value be enclosed in single quotes
 	  @return quoted value
 	*/
 	template<typename T>
