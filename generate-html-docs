@@ -1,6 +1,6 @@
 #!/bin/sh
 
-./autgen.sh
+./autogen.sh
 
 ./configure
 
