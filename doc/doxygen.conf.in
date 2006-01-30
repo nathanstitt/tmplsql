@@ -1,0 +1,43 @@
+PROJECT_NAME           = @LIBRARY_NAME@
+PROJECT_NUMBER         = @VERSION@
+INPUT                  = @top_srcdir@/@LIBRARY_NAME@
+FILE_PATTERNS          = *.cc *.h
+
+OUTPUT_DIRECTORY       = ./
+
+HTML_OUTPUT            = html
+MAN_OUTPUT             = man
+RECURSIVE              = YES
+
+QUIET                  = NO
+WARNINGS               = YES
+
+EXTRACT_ALL            = NO
+
+EXTRACT_STATIC         = YES
+CLASS_DIAGRAMS         = YES
+SHOW_INCLUDE_FILES     = YES
+
+ALPHABETICAL_INDEX     = YES
+
+GENERATE_HTML          = YES
+
+GENERATE_LATEX         = NO
+GENERATE_RTF           = NO
+GENERATE_MAN           = YES
+
+HAVE_DOT               = YES
+CLASS_GRAPH            = YES
+COLLABORATION_GRAPH    = YES
+TEMPLATE_RELATIONS     = NO
+INCLUDE_GRAPH          = YES
+INCLUDED_BY_GRAPH      = YES
+GRAPHICAL_HIERARCHY    = YES
+
+MAX_DOT_GRAPH_WIDTH    = 1024
+
+MAX_DOT_GRAPH_HEIGHT   = 1024
+
+GENERATE_LEGEND        = YES
+
+SEARCHENGINE           = NO

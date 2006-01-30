@@ -1,0 +1,131 @@
+
+
+dnl --------------------------------
+dnl Initialization macros.
+dnl --------------------------------
+
+AC_INIT( tmplsql/tmplsql.h )
+AM_CONFIG_HEADER( config.h )
+
+
+dnl -----------------------------------------------
+dnl Package name and version number (user defined)
+dnl -----------------------------------------------
+
+LIBRARY_NAME=tmplsql
+
+#release versioning
+AH_TEMPLATE( [ MAJOR_VERSION ], [ Package Major Version Number ] )
+AH_TEMPLATE( [ MINOR_VERSION ], [ Package Minor Version Number ] )
+AH_TEMPLATE( [ MICRO_VERSION ], [ Package Micro Version Number ] )
+
+MAJOR_VERSION=0
+MINOR_VERSION=8
+MICRO_VERSION=2
+
+#shared library versioning
+LIBRARY_VERSION=2:1:0
+#               | | |
+#        +------+ | +---+
+#        |        |     |
+#      current:revision:age
+#        |        |     |
+#        |        |     +- increment if interfaces have been added
+#        |        |        set to zero if interfaces have been removed
+#        |        |        or changed
+#        |        +- increment if source code has changed
+#        |           set to zero if current is incremented
+#        +- increment if interfaces have been added, removed or changed
+
+
+dnl --------------------------------
+dnl Package name and version number
+dnl --------------------------------
+
+AC_SUBST(LIBRARY_VERSION)
+
+PACKAGE=$LIBRARY_NAME
+AC_SUBST(LIBRARY_NAME)
+
+VERSION=$MAJOR_VERSION.$MINOR_VERSION.$MICRO_VERSION
+RELEASE=$MAJOR_VERSION.$MINOR_VERSION
+AC_SUBST(RELEASE)
+AC_SUBST(VERSION)
+
+AC_DEFINE_UNQUOTED(MAJOR_VERSION, $MAJOR_VERSION)
+AC_DEFINE_UNQUOTED(MINOR_VERSION, $MINOR_VERSION)
+AC_DEFINE_UNQUOTED(MICRO_VERSION, $MICRO_VERSION)
+
+
+
+AM_INIT_AUTOMAKE($PACKAGE, $VERSION, no-define)
+
+dnl -----------------------------------------------
+dnl Checks for programs.
+dnl -----------------------------------------------
+
+AC_PROG_CC
+AC_PROG_CXX
+AM_PROG_LIBTOOL
+AM_SANITY_CHECK
+
+AC_LANG_CPLUSPLUS
+
+AC_PATH_PROGS(PERL, perl)
+
+
+AC_CHECK_LIB(pq, PQconnectdb, [pglib=true],[pglib=false] )
+if test x$pglib = xfalse; then
+	AC_MSG_ERROR(tmplsql only supports the postgresql library at the present -- please install libpq.)
+fi
+
+AC_ARG_ENABLE(debug,
+     [  --enable-debug          Turn on debugging],
+     [debug=true],[debug=false])
+
+AH_TEMPLATE([DEBUG],[ enable building with -g ] )
+OPTIMIZATION="-O2"
+if test x$debug = xtrue; then
+	AC_DEFINE_UNQUOTED(DEBUG, $debug)
+	OPTIMIZATION="-g"
+fi
+AC_SUBST(OPTIMIZATION)
+
+AC_ARG_ENABLE(threaded,
+     [  --enable-threaded       Turn on thread locking],
+     [threaded=true],[threaded=false])
+
+dnl AH_TEMPLATE( [ THREADED ],[ Is built with locking for threaded ] )
+dnl if test x$threaded = xtrue; then
+dnl 	AC_DEFINE_UNQUOTED(THREADED, $threaded)
+dnl 	AM_CHECK_OMNIORB
+dnl fi
+
+AC_ARG_ENABLE(tests,
+     [  --enable-tests        Make test program],
+     [tests=true],[tests=false])
+
+AM_CONDITIONAL(MAKE_TESTS, test x$tests = xtrue)
+AC_SUBST(MAKE_TESTS)
+
+if test x$tests = xtrue; then
+	AM_PATH_CPPUNIT( 1.8.0,tests=true,tests=false )
+fi
+
+CXXFLAGS="$OPTIMIZATION -Wall"
+
+dnl -----------------------------------------------
+dnl Generates Makefile's, configuration files and scripts
+dnl -----------------------------------------------
+
+AC_OUTPUT(
+	Makefile 
+	doc/doxygen.conf
+	doc/Makefile
+	scripts/Makefile
+	scripts/tmplsql.pc 
+	scripts/tmplsql-config 
+	tmplsql/Makefile 
+	tests/Makefile
+)
+
