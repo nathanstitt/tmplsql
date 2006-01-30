@@ -1,0 +1,18 @@
+#!/bin/sh
+
+./autgen.sh
+
+./configure
+
+cd doc
+
+doxygen doxygen.conf
+
+mv html ../
+
+cd ..
+
+mv doc orig-doc
+
+mv html doc
+
